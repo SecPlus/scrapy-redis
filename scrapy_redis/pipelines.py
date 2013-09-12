@@ -32,4 +32,7 @@ class RedisPipeline(object):
 
     def item_key(self, item, spider):
         """Returns redis key based on given spider"""
-        return "%s:items" % spider.name
+        if item.get('redis_key'):
+            return "%s:%s" % (spider.name, item['redis_key'])
+        else:
+            return "%s:items" % spider.name
