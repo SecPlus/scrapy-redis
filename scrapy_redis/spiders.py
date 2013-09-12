@@ -20,8 +20,11 @@ class RedisMixin(object):
         self.server = connection.from_settings(self.crawler.settings)
         # idle signal is called when the spider has no requests left,
         # that's when we will schedule new requests from redis queue
-        self.crawler.signals.connect(self.spider_idle, signal=signals.spider_idle)
-        self.log("Reading URLs from redis list '%s' at %s:%s." % (self.redis_key, host, port))
+        self.crawler.signals.connect(self.spider_idle,
+                                     signal=signals.spider_idle)
+        self.log(("Reading URLs from redis list '%s' at %s." %
+                  (self.redis_key,
+                   connection.conn_string(self.crawler.settings))))
 
     def next_request(self):
         """Returns a request to be scheduled or none."""
